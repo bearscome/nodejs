@@ -1,9 +1,6 @@
-
 // 모듈
 const express = require("express");
 const app = express();
-
-const PORT = 3000;
 
 // 라우팅
 const home = require("./routes/home")
@@ -15,6 +12,4 @@ app.set("view engine", "ejs"); // view engine은 ejs
 
 app.use("/", home) // 미들웨어를 등록하는 매소드 -> 라우트 개념
 
-app.listen(PORT, () => {
-    console.log('서버 시작');
-});
+module.exports = app;
