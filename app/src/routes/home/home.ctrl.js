@@ -8,6 +8,9 @@ const output = {
   login: (req, res) => {
     res.render("home/login");
   },
+  register: (req, res) => {
+    res.render("home/register");
+  },
 };
 
 const process = {
@@ -16,21 +19,13 @@ const process = {
     const response = user.login();
     console.log("response", response);
     return res.json(response);
-    // const users = UserStorage.getUsers("id", "password");
-    // const response = {};
+  },
+  register: (req, res) => {
+    console.log("req", req.body);
+    const user = new User(req.body);
+    const response = user.register();
 
-    // if (users.id.includes(req.body.id)) {
-    //   const idx = users.id.indexOf(req.body.id);
-    //   if (users.password[idx] === req.body.password) {
-    //     response.success = true;
-    //     response.msg = "성공";
-    //     return res.json(response);
-    //   }
-    // }
-
-    // response.success = false;
-    // response.msg = "실패";
-    // return res.json(response);
+    return res.json(response);
   },
 };
 

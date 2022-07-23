@@ -29,9 +29,11 @@ class UserStorage {
       return number;
     }, {});
 
-    console.log("__________", userInfo);
-
     return userInfo;
+  }
+
+  static save() {
+    // db만들어야겠지
   }
 }
 
