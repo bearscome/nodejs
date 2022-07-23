@@ -1,40 +1,34 @@
 //router callback 함수
 
+const UserStorage = require("../../models/UserStorage");
+
 const output = {
-    home : (req, res) => {
-        res.render("home/index")
-    },
-    login : (req, res) => {
-        res.render("home/login")
-    }
-}
-
-
-const users = {
-    id: ['a', 'b', 'c'],
-    password: ['a', 'b', 'c']
-}
+  home: (req, res) => {
+    res.render("home/index");
+  },
+  login: (req, res) => {
+    res.render("home/login");
+  },
+};
 
 const process = {
-    login: (req, res) => {
-        console.warn('user ',req.body);
-        if(users.id.includes(req.body.id)) {
-            const idx = users.id.indexOf(req.body.id);
-            if(users.password[idx] === req.body.password) {
-                return res.json({
-                    success:true,
-                    msg:'성공'
-                })
-            }
-        }
+  login: (req, res) => {
+    const users = UserStorage.getUsers("id", "password");
+    const response = {};
 
-        return res.json({
-            success:false,
-            msg:"실패"
-        });
+    if (users.id.includes(req.body.id)) {
+      const idx = users.id.indexOf(req.body.id);
+      if (users.password[idx] === req.body.password) {
+        response.success = true;
+        response.msg = "성공";
+        return res.json(response);
+      }
     }
-}
 
+    response.success = false;
+    response.msg = "실패";
+    return res.json(response);
+  },
+};
 
-
-module.exports = {output, process}
+module.exports = { output, process };
