@@ -5,9 +5,9 @@ class User {
     this.body = body;
   }
 
-  login() {
+  async login() {
     const client = this.body;
-    const { id, password } = UserStorage.gerUserInfo(client.id);
+    const { id, password } = await UserStorage.gerUserInfo(client.id);
 
     if (id) {
       if (id === client.id && password === client.password) {
@@ -23,15 +23,15 @@ class User {
     const client = this.body;
     UserStorage.save(client);
 
-    const { id } = UserStorage.gerUserInfo(body.id);
+    // const { id } = UserStorage.gerUserInfo(body.id);
 
-    if (id) {
-      console.log(";asdsa");
-      return {
-        success: false,
-        msg: "아이디가 있습니다.",
-      };
-    }
+    // if (id) {
+    //   console.log(";asdsa");
+    //   return {
+    //     success: false,
+    //     msg: "아이디가 있습니다.",
+    //   };
+    // }
   }
 }
 

@@ -1,14 +1,8 @@
+const fs = require("fs").promises;
+// fileRead => promise로 반환
 class UserStorage {
-  static #users = {
-    // #는 외부에서 접근 불가
-    id: ["a", "b", "c"],
-    password: ["a", "b", "c"],
-    name: ["a", "b", "c"],
-  };
-
   static getUsers(...arg) {
     // 은닉화된 users 리턴
-    const users = this.#users;
     const newUsers = arg.reduce((newUsers, arg) => {
       if (users.hasOwnProperty(arg)) {
         newUsers[arg] = users[arg];
@@ -20,10 +14,15 @@ class UserStorage {
     return newUsers;
   }
 
-  static gerUserInfo(id) {
-    const users = this.#users;
-    const idx = users.id.indexOf(id);
+  static async gerUserInfo(id) {
+    return fs.readFile("./src/databases/users.json").then((data) => {
+      return this.#getUserInfo(data, id);
+    });
+  }
 
+  static #getUserInfo(data, id) {
+    const users = JSON.parse(data);
+    const idx = users.id.indexOf(id);
     const userInfo = Object.keys(users).reduce((number, info) => {
       number[info] = users[info][idx];
       return number;
@@ -33,6 +32,10 @@ class UserStorage {
   }
 
   static save() {
+    fs.readFile("./src/databases/users.json", (err, data) => {
+      if (err) throw err;
+      console.log("ㅁㄴㅇㄴㅁㅇㅁㄴ", JSON.parse(data));
+    });
     // db만들어야겠지
   }
 }
