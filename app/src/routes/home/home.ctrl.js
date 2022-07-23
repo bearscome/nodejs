@@ -1,5 +1,6 @@
 //router callback 함수
 
+const User = require("../../models/User");
 const UserStorage = require("../../models/UserStorage");
 
 const output = {
@@ -13,21 +14,25 @@ const output = {
 
 const process = {
   login: (req, res) => {
-    const users = UserStorage.getUsers("id", "password");
-    const response = {};
-
-    if (users.id.includes(req.body.id)) {
-      const idx = users.id.indexOf(req.body.id);
-      if (users.password[idx] === req.body.password) {
-        response.success = true;
-        response.msg = "성공";
-        return res.json(response);
-      }
-    }
-
-    response.success = false;
-    response.msg = "실패";
+    const user = new User(req.body);
+    const response = user.login();
+    console.log("response", response);
     return res.json(response);
+    // const users = UserStorage.getUsers("id", "password");
+    // const response = {};
+
+    // if (users.id.includes(req.body.id)) {
+    //   const idx = users.id.indexOf(req.body.id);
+    //   if (users.password[idx] === req.body.password) {
+    //     response.success = true;
+    //     response.msg = "성공";
+    //     return res.json(response);
+    //   }
+    // }
+
+    // response.success = false;
+    // response.msg = "실패";
+    // return res.json(response);
   },
 };
 
