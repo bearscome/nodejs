@@ -17,7 +17,7 @@ const login = () => {
             "Content-Type":"application/json"
         },
         body: JSON.stringify(req)
-    })
+    }).then(async (res) => res.json()).then(console.log)
 }
 
 btn.addEventListener('click', login);

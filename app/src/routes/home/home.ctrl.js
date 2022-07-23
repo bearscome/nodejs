@@ -9,9 +9,29 @@ const output = {
     }
 }
 
+
+const users = {
+    id: ['a', 'b', 'c'],
+    password: ['a', 'b', 'c']
+}
+
 const process = {
     login: (req, res) => {
-        console.log(req.body);
+        console.warn('user ',req.body);
+        if(users.id.includes(req.body.id)) {
+            const idx = users.id.indexOf(req.body.id);
+            if(users.password[idx] === req.body.password) {
+                return res.json({
+                    success:true,
+                    msg:'성공'
+                })
+            }
+        }
+
+        return res.json({
+            success:false,
+            msg:"실패"
+        });
     }
 }
 
