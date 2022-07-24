@@ -29,7 +29,8 @@ const register = () => {
       if (rs.success) {
         location.href = "/login";
       } else {
-        alert("로그인 실패");
+        console.log(rs);
+        alert(rs.msg);
       }
     })
     .catch((err) => console.error(new Error("로그인 중 에러 발생")));

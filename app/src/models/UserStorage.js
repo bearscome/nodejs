@@ -1,9 +1,17 @@
 const fs = require("fs").promises;
 // fileRead => promise로 반환
 class UserStorage {
-  static getUsers(...arg) {
+  static getUsers(isAll, ...arg) {
     // 은닉화된 users 리턴
-    const newUsers = arg.reduce((newUsers, arg) => {
+    return fs.readFile("./src/databases/users.json").then((data) => {
+      return this.#getUsers(data, isAll, arg);
+    });
+  }
+
+  static #getUsers(data, isAll, fileds) {
+    const users = JSON.parse(data);
+    if (isAll) return users;
+    const newUsers = fileds.reduce((newUsers, arg) => {
       if (users.hasOwnProperty(arg)) {
         newUsers[arg] = users[arg];
       }
@@ -31,11 +39,20 @@ class UserStorage {
     return userInfo;
   }
 
-  static save() {
-    fs.readFile("./src/databases/users.json", (err, data) => {
-      if (err) throw err;
-      console.log("ㅁㄴㅇㄴㅁㅇㅁㄴ", JSON.parse(data));
-    });
+  static async save(userInfo) {
+    const users = await this.getUsers(true);
+    console.log(users.id.includes("a"));
+    if (users.id.includes(userInfo.id)) {
+      throw "이미 존재하는 아이디 입니다.";
+    }
+
+    users.id.push(userInfo.id);
+    users.name.push(userInfo.name);
+    users.password.push(userInfo.password);
+    fs.writeFile("./src/databases/users.json", JSON.stringify(users));
+
+    return { success: true };
+
     // db만들어야겠지
   }
 }
