@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const crypto = require("crypto");
 
 class UserStorage {
   static async gerUserInfo(id) {
@@ -12,13 +13,19 @@ class UserStorage {
   }
 
   static async save(userInfo) {
+    const { id, name, password } = userInfo;
+    const salt = crypto.randomBytes(128).toString("base64");
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password + salt)
+      .digest("hex");
+
     return new Promise((res, rej) => {
       const query = "INSERT INTO users(id, name, password) VALUE(?,?,?)";
-      const { id, name, password } = userInfo;
       db.query(
         query,
         // 쿼리문
-        [id, name, password],
+        [id, name, hashPassword],
         // 벨류에 들어갈 변수 값
         (err) => {
           // 에러
