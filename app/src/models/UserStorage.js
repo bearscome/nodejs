@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
-// fileRead => promise로 반환
+const db = require("../config/db");
+
 class UserStorage {
   static getUsers(isAll, ...arg) {
     // 은닉화된 users 리턴
@@ -23,8 +23,11 @@ class UserStorage {
   }
 
   static async gerUserInfo(id) {
-    return fs.readFile("./src/databases/users.json").then((data) => {
-      return this.#getUserInfo(data, id);
+    return new Promise((res, rej) => {
+      db.query("select * from users where id = ?", [id], (err, data) => {
+        if (err) rej(err);
+        res(data[0]);
+      });
     });
   }
 
@@ -39,22 +42,7 @@ class UserStorage {
     return userInfo;
   }
 
-  static async save(userInfo) {
-    const users = await this.getUsers(true);
-    console.log(users.id.includes("a"));
-    if (users.id.includes(userInfo.id)) {
-      throw "이미 존재하는 아이디 입니다.";
-    }
-
-    users.id.push(userInfo.id);
-    users.name.push(userInfo.name);
-    users.password.push(userInfo.password);
-    fs.writeFile("./src/databases/users.json", JSON.stringify(users));
-
-    return { success: true };
-
-    // db만들어야겠지
-  }
+  static async save(userInfo) {}
 }
 
 module.exports = UserStorage;
