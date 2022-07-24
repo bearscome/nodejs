@@ -1,7 +1,9 @@
 // 모듈
-const express = require("express");
-const bodyParser = require("body-parser");
 require("dotenv").config();
+const express = require("express");
+const morgan = require("morgan");
+const accessLogStream = require("./src/config/log");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -19,8 +21,11 @@ app.use(bodyParser.json());
 // 클라이언트 값이 JSON일 때  바디파서 없으면 undefinded가 반환된다
 app.use(bodyParser.urlencoded({ extended: true }));
 // URL을 통해 전달되는 데이터에 한글, 공백과 같은 문자가 포함될 경우 제대로 인식되지 않는 문제를 해결
-
-app.use("/", home); // 라우트
+app.use(morgan("dev"));
+app.use(morgan("common", { stream: accessLogStream }));
+// 로그 관련 라이브러리
+app.use("/", home);
+// 라우트
 
 module.exports = app;
 
