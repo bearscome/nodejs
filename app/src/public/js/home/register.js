@@ -29,7 +29,7 @@ const register = () => {
       if (rs.success) {
         location.href = "/login";
       } else {
-        console.log(rs);
+        if (rs.err) return alert(rs.err);
         alert(rs.msg);
       }
     })

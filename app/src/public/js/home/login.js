@@ -3,6 +3,9 @@ const password = document.querySelector("#password");
 const btn = document.querySelector("#btn");
 
 const login = () => {
+  if (!id.value) return alert("아이디를 입력해주세요.");
+  if (!password.value) return alert("비밀번호를 입력해주세요.");
+
   const req = {
     id: id.value,
     password: password.value,
@@ -19,7 +22,8 @@ const login = () => {
       if (rs.success) {
         location.href = "/";
       } else {
-        alert("로그인 실패");
+        if (rs.err) return alert(rs.err);
+        alert(rs.msg);
       }
     })
     .catch((err) => console.error(new Error("로그인 중 에러 발생")));

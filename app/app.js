@@ -9,6 +9,7 @@ const app = express();
 
 // 라우팅
 const home = require("./src/routes/home");
+const logger = require("./src/config/logger");
 
 //view app setting;
 app.set("views", "./src/views");
@@ -21,6 +22,8 @@ app.use(bodyParser.json());
 // 클라이언트 값이 JSON일 때  바디파서 없으면 undefinded가 반환된다
 app.use(bodyParser.urlencoded({ extended: true }));
 // URL을 통해 전달되는 데이터에 한글, 공백과 같은 문자가 포함될 경우 제대로 인식되지 않는 문제를 해결
+// app.use(morgan("tiny", { stream: logger.stream }));
+// morgan과 winston이랑 같이 쓸 수도 있다.
 
 // app.use(morgan("dev"));
 // app.use(morgan("common", { stream: accessLogStream }));
