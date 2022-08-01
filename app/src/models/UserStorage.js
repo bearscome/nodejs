@@ -34,10 +34,9 @@ class UserStorage {
 
   static checkUserHashPassword(password, salt) {
     return new Promise((resolve, reject) => {
-      console.log({ password, salt });
       crypto.pbkdf2(password, salt, 9999, 64, "sha512", (err, key) => {
         if (err) reject(err);
-
+        console.log('checkUserHashPassword', password, salt, key.toString('base64'))
         resolve(key.toString("base64"));
       });
     });

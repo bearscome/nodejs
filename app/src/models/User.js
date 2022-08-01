@@ -10,8 +10,7 @@ class User {
     const client = this.body;
     try {
       const user = await UserStorage.gerUserInfo(client.id);
-      const hashPassword = await UserStorage.checkUserHashPassword(user.password, user.salt);
-      console.log("checkUser", user, hashPassword);
+      const hashPassword = await UserStorage.checkUserHashPassword(client.password, user.salt);
       if (user) {
         if (user.id === client.id && user.password === hashPassword) {
           const token = await setWebToken(user.id, user.name);
